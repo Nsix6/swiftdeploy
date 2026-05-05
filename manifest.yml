@@ -1,0 +1,21 @@
+deployment:
+  health_check_path: /healthz
+  health_check_timeout: 60
+  restart_policy: unless-stopped
+  strategy: stable
+network:
+  driver_type: bridge
+  name: swiftdeploy-net
+nginx:
+  error_handling:
+    format: json
+  headers:
+    X-Deployed-By: swiftdeploy
+  image: nginx:latest
+  port: 8080
+  proxy_timeout: 5
+services:
+  image: swift-deploy-1-node:latest
+  mode: stable
+  port: 3000
+  version: 1.0.0
