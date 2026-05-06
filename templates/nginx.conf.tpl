@@ -1,8 +1,8 @@
 events {}
 
 http {
-  log_format custom '$time_iso8601 | $status | ${request_time}s | $upstream_addr | $request';
-  access_log /var/log/nginx/access.log custom;
+  log_format custom '$time_iso8601 | $status | $request_time s | $upstream_addr | $request';
+  access_log /dev/stdout custom;
 
   server {
     listen 80;

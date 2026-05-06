@@ -1,4 +1,3 @@
-
 services:
   app:
     image: {{app_image}}
@@ -18,7 +17,11 @@ services:
     cap_drop:
       - ALL
     healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:{{app_port}}/healthz"]
+      test:
+        - CMD
+        - curl
+        - -f
+        - http://localhost:{{app_port}}/healthz
       interval: 5s
       timeout: 2s
       retries: 5
@@ -37,6 +40,19 @@ services:
     restart: {{restart_policy}}
     networks:
       - {{network_name}}
+
+  opa:
+    image: openpolicyagent/opa:latest
+    container_name: swiftdeploy-opa
+    command:
+      - run
+      - --server
+      - /policies
+    volumes:
+      - ./policies:/policies
+    networks:
+      - {{network_name}}
+    restart: unless-stopped
 
 networks:
   {{network_name}}:
